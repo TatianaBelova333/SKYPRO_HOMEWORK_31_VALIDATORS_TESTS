@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from HOMEWORK_30.validators import check_is_published_status
 from ads.models import Ad
 from authentication.models import User
 
@@ -11,7 +11,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class AdListSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer(read_only=True)
+    # author = AuthorSerializer(read_only=True)
 
     category = serializers.SlugRelatedField(
         read_only=True,
@@ -38,6 +38,8 @@ class AdDetailSerializer(serializers.ModelSerializer):
 
 class AdCreateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
+    # author = serializers.Charfield(default=serializers.CreateOnlyDefault()
+    is_published = serializers.BooleanField(validators=[check_is_published_status])
 
     class Meta:
         model = Ad
@@ -56,4 +58,3 @@ class AdDestroySerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
         fields = '__all__'
-
